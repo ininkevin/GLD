@@ -14,10 +14,19 @@ pip install -r requirements.txt
 ## Training
 Run
 ```
-CUDA_VISIBLE_DEVICES=0 python main.py --dataset cpv2 --mode MODE --debias gradient --topq 1 --topv -1 --qvp 5 --output [] 
+CUDA_VISIBLE_DEVICES=0 python gld_iter_bce.py
+CUDA_VISIBLE_DEVICES=0 python gld_joint_bce.py
 ```
-
-Set `MODE` as `gld_iter` and `gld_tog` for our model; `gld_iter_trade` for w/ regularization term version; `base` for baseline model.
+for our model in iterative and joint training; 
+```
+CUDA_VISIBLE_DEVICES=0 python gld_iter_ce.py
+CUDA_VISIBLE_DEVICES=0 python gld_joint_ce.py
+```
+to see the difference with crossentropy as loss
+```
+CUDA_VISIBLE_DEVICES=0 python gld_trades_iter_ce.py
+```
+for w/ regularization term version;
 
 <!-- ## Training ablations
 For models in Sec. 3, execute `from train_ab import train` and `import base_model_ab as base_model` in `main.py`. Run
@@ -26,4 +35,9 @@ CUDA_VISIBLE_DEVICES=0 python main.py --dataset cpv2 --mode MODE --debias METHOD
 ``` -->
 
 ## Visualization
-We provide visualization in `visualization.py`
+To see visualization, run
+```
+CUDA_VISIBLE_DEVICES=0 python inference.py
+CUDA_VISIBLE_DEVICES=0 python inference_base.py
+```
+、inference.py、for the method we proposed; 、inference_base.py、for the baseline model
