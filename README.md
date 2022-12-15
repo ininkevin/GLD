@@ -12,9 +12,8 @@ Run
 ```
 CUDA_VISIBLE_DEVICES=0 python main.py --dataset cpv2 --mode MODE --debias gradient --topq 1 --topv -1 --qvp 5 --output [] 
 ```
-to train a model.  In `main.py`, `import base_model` for UpDn baseline; `import base_model_ban as base_model` for BAN baseline; `import base_model_block as base_model` for S-MRL baseline.
 
-Set `MODE` as `gge_iter` and `gge_tog` for our best performance model; `gge_d_bias` and `gge_q_bias` for single bias ablation; `base` for baseline model.
+Set `MODE` as `gld_iter` and `gld_tog` for our model; `gld_iter_trade` for w/ regularization term version; `base` for baseline model.
 
 ## Training ablations
 For models in Sec. 3, execute `from train_ab import train` and `import base_model_ab as base_model` in `main.py`. Run
