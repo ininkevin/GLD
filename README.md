@@ -2,9 +2,9 @@
 
 
 ## Install
-'''
+```
 pip install -r requirements.txt
-'''
+```
 ## Data Setup
 - Download UpDn features from [google drive](https://drive.google.com/drive/folders/1IXTsTudZtYLqmKzsXxIZbXfCnys_Izxr) into `/data/detection_features` folder
 - Download questions/answers for VQAv2 and VQA-CPv2 by executing `bash tools/download.sh`
