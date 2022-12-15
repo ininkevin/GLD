@@ -22,7 +22,7 @@ for our model in iterative and joint training;
 CUDA_VISIBLE_DEVICES=0 python gld_iter_ce.py
 CUDA_VISIBLE_DEVICES=0 python gld_joint_ce.py
 ```
-to see the difference with crossentropy as loss
+to see the difference with crossentropy as loss;
 ```
 CUDA_VISIBLE_DEVICES=0 python gld_trades_iter_ce.py
 ```
