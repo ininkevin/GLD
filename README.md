@@ -40,4 +40,4 @@ To see visualization, run
 CUDA_VISIBLE_DEVICES=0 python inference.py
 CUDA_VISIBLE_DEVICES=0 python inference_base.py
 ```
-、inference.py、for the method we proposed; 、inference_base.py、for the baseline model
+ˋinference.pyˋfor the method we proposed; ˋinference_base.pyˋfor the baseline model
