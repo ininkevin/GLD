@@ -32,6 +32,11 @@ wget -P data https://s3.amazonaws.com/cvmlp/vqa/mscoco/vqa/v2_Annotations_Val_ms
 unzip data/v2_Annotations_Val_mscoco.zip -d data
 rm data/v2_Annotations_Val_mscoco.zip
 
+#Image features
+wget -P data https://imagecaption.blob.core.windows.net/imagecaption/trainval_36.zip
+unzip data/trainval_36.zip -d detection_features
+rm data/trainval_36.zip
+
 
 
 
