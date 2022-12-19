@@ -1,3 +1,3 @@
-wget -P data https://imagecaption.blob.core.windows.net/imagecaption/trainval_36.zip
-unzip data/trainval_36.zip -d data
-rm data/trainval_36.zip
+wget -P detection_features https://imagecaption.blob.core.windows.net/imagecaption/trainval_36.zip
+unzip detection_features/trainval_36.zip -d detection_features
+rm detection_features/trainval_36.zip
