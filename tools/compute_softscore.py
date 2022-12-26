@@ -257,20 +257,6 @@ def load_cp():
     compute_target(val_answers, ans2label, 'val', "data/cp-cache")
     # compute_target(v2_val_answers, ans2label, 'v2_val', "data/cp-cache")
 
-def load_cp_v1():
-    train_answer_file = "data/vqacp_v1_train_annotations.json"
-    with open(train_answer_file) as f:
-        train_answers = json.load(f)  # ['annotations']
-
-    val_answer_file = "data/vqacp_v1_test_annotations.json"
-    with open(val_answer_file) as f:
-        val_answers = json.load(f)  # ['annotations']
-
-    occurence = filter_answers(train_answers, 9)
-    ans2label = create_ans2label(occurence, 'trainval', "data/cp-v1-cache")
-    compute_target(train_answers, ans2label, 'train', "data/cp-v1-cache")
-    compute_target(val_answers, ans2label, 'val', "data/cp-v1-cache")
-
 
 def load_v2():
     train_answer_file = 'data/v2_mscoco_train2014_annotations.json'
@@ -289,12 +275,10 @@ def load_v2():
 
 def main():
     parser = argparse.ArgumentParser("Dataset preprocessing")
-    parser.add_argument("dataset", choices=["cp_v2", "v2",'cp_v1'])
+    parser.add_argument("dataset", choices=["cp_v2", "v2"])
     args = parser.parse_args()
     if args.dataset == "v2":
         load_v2()
-    elif args.dataset == "cp_v1":
-        load_cp_v1()
     elif args.dataset=='cp_v2':
         load_cp()
 
