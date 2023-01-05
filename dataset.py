@@ -101,12 +101,6 @@ def _load_dataset(dataroot, name, img_id2val, dataset):
     #   question_path = os.path.join(dataroot, 'v2_OpenEnded_mscoco_val2014_questions.json')
       with open(question_path) as f:
         questions = json.load(f)
-    elif dataset=='cpv1':
-      answer_path = os.path.join(dataroot, 'cp-v1-cache', '%s_target.pkl' % name)
-      name = "train" if name == "train" else "test"
-      question_path = os.path.join(dataroot, 'vqacp_v1_%s_questions.json' % name)
-      with open(question_path) as f:
-        questions = json.load(f)
     elif dataset=='v2':
       answer_path = os.path.join(dataroot, 'cache', '%s_target.pkl' % name)
     #   answer_path = os.path.join(dataroot, 'cp-cache', 'v2_%s_target.pkl' % name)
@@ -146,37 +140,11 @@ class VQAFeatureDataset(Dataset):
         super(VQAFeatureDataset, self).__init__()
         self.name=name
         if dataset=='cpv2':
-            # with open('data/hints/train_cpv2_hintscore.json', 'r') as f:
-            #     self.train_hintscore = json.load(f)
-            # with open('data/hints/test_cpv2_hintscore.json', 'r') as f:
-            #     self.test_hintscore = json.load(f)
-            hint_fname = f'hints/train_caption_based_hints.pkl'
-            self.train_hintscore = pickle.load(open(os.path.join(dataroot, hint_fname), 'rb'))
-            hint_fname = f'hints/val_caption_based_hints.pkl'
-            self.test_hintscore = pickle.load(open(os.path.join(dataroot, hint_fname), 'rb'))
             with open('util/cpv2_type_mask.json', 'r') as f:
                 self.type_mask = json.load(f)
             with open('util/cpv2_notype_mask.json', 'r') as f:
                 self.notype_mask = json.load(f)
-
-        elif dataset=='cpv1':
-            with open('data/hints/train_cpv1_hintscore.json', 'r') as f:
-                self.train_hintscore = json.load(f)
-            with open('data/test_cpv1_hintscore.json', 'r') as f:
-                self.test_hintscore = json.load(f)
-            with open('util/cpv1_type_mask.json', 'r') as f:
-                self.type_mask = json.load(f)
-            with open('util/cpv1_notype_mask.json', 'r') as f:
-                self.notype_mask = json.load(f)
         elif dataset=='v2':
-            # with open('data/hints/train_v2_hintscore.json', 'r') as f:
-            #     self.train_hintscore = json.load(f)
-            # with open('data/hints/test_v2_hintscore.json', 'r') as f:
-            #     self.test_hintscore = json.load(f)
-            hint_fname = f'hints/train_caption_based_hints.pkl'
-            self.train_hintscore = pickle.load(open(os.path.join(dataroot, hint_fname), 'rb'))
-            hint_fname = f'hints/val_caption_based_hints.pkl'
-            self.test_hintscore = pickle.load(open(os.path.join(dataroot, hint_fname), 'rb'))
             with open('util/v2_type_mask.json', 'r') as f:
                 self.type_mask = json.load(f)
             with open('util/v2_notype_mask.json', 'r') as f:
@@ -187,9 +155,6 @@ class VQAFeatureDataset(Dataset):
         if dataset=='cpv2':
             ans2label_path = os.path.join(dataroot, 'cp-cache', 'trainval_ans2label.pkl')
             label2ans_path = os.path.join(dataroot, 'cp-cache', 'trainval_label2ans.pkl')
-        elif dataset=='cpv1':
-            ans2label_path = os.path.join(dataroot, 'cp-v1-cache', 'trainval_ans2label.pkl')
-            label2ans_path = os.path.join(dataroot, 'cp-v1-cache', 'trainval_label2ans.pkl')
         elif dataset=='v2':
             ans2label_path = os.path.join(dataroot, 'cache', 'trainval_ans2label.pkl')
             label2ans_path = os.path.join(dataroot, 'cache', 'trainval_label2ans.pkl')
@@ -314,47 +279,19 @@ class VQAFeatureDataset(Dataset):
         if labels is not None:
             target.scatter_(0, labels, scores)
 
-        if self.use_hdf5:
-            if self.name=='train':
-                # train_hint=torch.tensor(self.train_hintscore[str(q_id)])
-                if q_id in self.train_hintscore.keys():
-                    train_hint=torch.tensor(self.train_hintscore[q_id]).float()
-                else:
-                    train_hint = torch.ones((36))/36
-                type_mask=torch.tensor(self.type_mask[str(q_id)])
-                notype_mask=torch.tensor(self.notype_mask[str(q_id)])
-                if "bias" in entry:
-                    return features, ques, target,entry["bias"],q_id,type_mask,notype_mask, ques_mask
+        if self.name=='train':
+            type_mask=torch.tensor(self.type_mask[str(q_id)])
+            notype_mask=torch.tensor(self.notype_mask[str(q_id)])
+            if "bias" in entry:
+                return features, ques, target,entry["bias"],type_mask,notype_mask, ques_mask
 
-                else:
-                    return features, ques,target, 0, q_id, train_hint
             else:
-                # test_hint=torch.tensor(self.test_hintsocre[str(q_id)])
-                if q_id in self.test_hintscore.keys():
-                    test_hint=torch.tensor(self.test_hintscore[q_id]).float()
-                else:
-                    test_hint = torch.zeros((36))/36
-                if "bias" in entry:
-                    return features, ques, target, entry["bias"], q_id, test_hint, ques_mask
-                else:
-                    return features, ques, target, 0,q_id,test_hint, ques_mask
+                return features, ques,target, 0, q_id
         else:
-            if self.name=='train':
-                train_hint=torch.tensor(self.train_hintscore[str(q_id)])
-                type_mask=torch.tensor(self.type_mask[str(q_id)])
-                notype_mask=torch.tensor(self.notype_mask[str(q_id)])
-                if "bias" in entry:
-                    return features, ques, target,entry["bias"], train_hint, type_mask,notype_mask, ques_mask
-
-                else:
-                    return features, ques,target, 0, q_id, train_hint
+            if "bias" in entry:
+                return features, ques, target, entry["bias"], q_id, ques_mask
             else:
-                test_hint=torch.tensor(self.test_hintscore[str(q_id)])
-                if "bias" in entry:
-                    return features, ques, target, entry["bias"],q_id,test_hint, ques_mask
-                else:
-                    return features, ques, target, 0,q_id,test_hint, ques_mask
-
+                return features, ques, target, 0,q_id, ques_mask
     def __len__(self):
         return len(self.entries)
 
