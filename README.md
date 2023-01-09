@@ -29,4 +29,4 @@ To see visualization, set `visual` as `True`
 CUDA_VISIBLE_DEVICES=0 python main.py -dataset cpv2 -mode gld_reg -scale sin -visual True -qid 140 -output vis
 ```
 change `qid` to see the different question and image pairs
-and change mode to see the visualization result to see in different setting
+and change mode to see the visualization result in different setting
