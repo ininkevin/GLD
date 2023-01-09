@@ -14,7 +14,7 @@ pip install -r requirements.txt
 ## Training
 Run
 ```
-CUDA_VISIBLE_DEVICES=0 python main.py -dataset cpv2 -mode base -scale increase -output base
+CUDA_VISIBLE_DEVICES=0 python main.py -dataset cpv2 -mode base -scale sin -output base
 ```
 Set `mode` as `gld_iter` and `gld_joint` for our model in iterative and joint training; `base` for baseline model;`gld_reg`.for w/ regularization term version 
 Set `dataset` as `v2` for the general VQA task; `cpv2` for the VQA task which enhance the language prior
@@ -25,9 +25,9 @@ CUDA_VISIBLE_DEVICES=0 python gld_joint_ce.py
 to see the difference with crossentropy as loss;
 
 ## Visualization
-To see visualization, run
+To see visualization, set `visual` as `True`
 ```
-CUDA_VISIBLE_DEVICES=0 python inference.py
-CUDA_VISIBLE_DEVICES=0 python inference_base.py
+CUDA_VISIBLE_DEVICES=0 python main.py -dataset cpv2 -mode gld_reg -scale sin -visual True -qid 140 -output vis
 ```
-`inference.py` for the method we proposed; `inference_base.py`for the baseline model
+change `qid` to see the different question and image pairs
+and change mode to see the visualization result to see in different setting
