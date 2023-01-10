@@ -144,15 +144,6 @@ def parse_args():
     parser.add_argument(
         '-p', "--entropy_penalty", default=0.36, type=float,
         help="Entropy regularizer weight for the learned_mixin model")
-    parser.add_argument(
-        '-mode', default="updn",
-        choices=["updn", "q_debias","v_debias","q_v_debias"],
-        help="Kind of ensemble loss to use")
-    parser.add_argument(
-        '-debias', default="learned_mixin",
-        choices=["learned_mixin", "reweight", "bias_product", "none",'focal' , 'rubi', 'gradient'],
-        help="Kind of ensemble loss to use")
-    
 
     # Arguments from the original model, we leave this default, except we
     parser.add_argument('-num_hid', type=int, default=1024)
