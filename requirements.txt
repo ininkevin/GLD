@@ -25,8 +25,7 @@ spacy==2.2.1
 srsly==0.1.0
 statsmodels==0.10.2
 thinc==7.1.1
-torch==1.7.1
-torchvision==0.4.0
 tqdm==4.36.1
 urllib3==1.25.6
 wasabi==0.2.2
+torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
