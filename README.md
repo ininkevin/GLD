@@ -9,6 +9,7 @@ pip install -r requirements.txt
 - Download questions/answers for VQAv2 and VQA-CPv2 by executing `bash tools/download.sh`
 <!-- - Download visual cues/hints provided in [A negative case analysis of visual grounding methods for VQA](https://drive.google.com/drive/folders/1fkydOF-_LRpXK1ecgst5XujhyQdE6It7?usp=sharing) into `data/hints`. -->
 - Preprocess process the data with `bash tools/process.sh`
+- The parameters are stored at https://drive.google.com/drive/folders/1eW07eGIHukT3YKMFtG-Hh1MJr6hIOPDg?usp=sharing
 
 ## Training
 Run
