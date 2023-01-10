@@ -16,8 +16,8 @@ Run
 ```
 CUDA_VISIBLE_DEVICES=0 python main.py -dataset cpv2 -mode base -scale sin -output base
 ```
-Set `mode` as `gld_iter` and `gld_joint` for our model in iterative and joint training; `base` for baseline model;`gld_reg`.for w/ regularization term version 
-Set `dataset` as `v2` for the general VQA task; `cpv2` for the VQA task which enhance the language prior
+- Set `mode` as `gld_iter` and `gld_joint` for our model in iterative and joint training; `base` for baseline model;`gld_reg`.for w/ regularization term version 
+- Set `dataset` as `v2` for the general VQA task; `cpv2` for the VQA task which enhance the language prior
 ```
 CUDA_VISIBLE_DEVICES=0 python gld_iter_ce.py
 CUDA_VISIBLE_DEVICES=0 python gld_joint_ce.py
