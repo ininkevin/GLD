@@ -8,7 +8,8 @@ from dataset import Dictionary, VQAFeatureDataset
 from torch.utils.data import DataLoader
 import numpy as np
 import click
-
+from collections import OrderedDict
+from tensorboardX import SummaryWriter
 import torch
 import torch.nn as nn
 import utils
@@ -138,12 +139,13 @@ def parse_args():
 
     parser.add_argument(
         '-dataset', default='cpv2',
-        choices=["v2", "cpv2", "cpv1"],
+        choices=["v2", "cpv2"],
         help="Run on VQA-2.0 instead of VQA-CP 2.0"
     )
     parser.add_argument(
         '-p', "--entropy_penalty", default=0.36, type=float,
         help="Entropy regularizer weight for the learned_mixin model")
+    
 
     # Arguments from the original model, we leave this default, except we
     parser.add_argument('-num_hid', type=int, default=1024)
@@ -165,7 +167,7 @@ def compute_score_with_logits(logits, labels):
     return scores
 
 
-def evaluate(model, dataloader, qid2type):
+def evaluate(model, dataloader, qid2type, tbx, dset):
     score = 0.
     upper_bound = 0.
 
@@ -179,7 +181,12 @@ def evaluate(model, dataloader, qid2type):
         score += batch_scores.sum()
         upper_bound += (a.max(1)[0]).sum()
         qids = qids.detach().cpu().int().numpy()
-
+    out= torch.cat((pred.data.cpu(), torch.ones(len(pred),1)),1)
+    tbx.add_embedding(
+                out,
+                metadata=a.data
+            )
+    
             
 
     score = score / len(dataloader.dataset)
@@ -283,6 +290,7 @@ def main():
                                  .format(args.output, default=False)):
             os.system('rm -r ' + args.output)
             utils.create_dir(args.output)
+    tbx = SummaryWriter(args.output)
 
 
     logger = utils.Logger(os.path.join(args.output, 'log.txt'))
@@ -323,7 +331,7 @@ def main():
 
     print("Start to test %s..." % args.load_checkpoint_path)
     model.train(False)
-    results = evaluate(model, eval_loader, qid2type)
+    results = evaluate(model, eval_loader, qid2type, tbx, eval_dset)
 
     eval_score = results["acc_score"]
     bound = results["upper_bound"]
